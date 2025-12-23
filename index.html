@@ -11,91 +11,26 @@
 
   <style>
     body { margin:0; background:#000; color:#eee; font-family:system-ui; }
-    #age-gate {
-      position:fixed; inset:0;
-      background:rgba(0,0,0,0.98);
-      backdrop-filter:blur(12px);
-      display:flex; align-items:center; justify-content:center;
-      z-index:9999;
-    }
-    .age-box {
-      background:rgba(15,15,20,0.95);
-      border:3px solid #ff0066;
-      border-radius:20px;
-      padding:4rem 2.5rem;
-      text-align:center;
-      max-width:520px;
-      box-shadow:0 0 80px #ff006680;
-    }
+    #age-gate { position:fixed; inset:0; background:rgba(0,0,0,0.98); backdrop-filter:blur(12px); display:flex; align-items:center; justify-content:center; z-index:9999; }
+    .age-box { background:rgba(15,15,20,0.95); border:3px solid #ff0066; border-radius:20px; padding:4rem 2.5rem; text-align:center; max-width:520px; box-shadow:0 0 80px #ff006680; }
     .age-box h1 { font-size:7rem; color:#ff0066; margin-bottom:1rem; }
     .age-box p { font-size:1.5rem; margin:1.8rem 0 3rem; }
-    .age-btn {
-      padding:1.3rem 4rem;
-      font-size:1.5rem;
-      border:none;
-      border-radius:50px;
-      cursor:pointer;
-      margin:1rem;
-      transition:all .3s;
-    }
+    .age-btn { padding:1.3rem 4rem; font-size:1.5rem; border:none; border-radius:50px; cursor:pointer; margin:1rem; transition:all .3s; }
     #enter { background:#ff0066; color:white; }
     #enter:hover { background:#e6005c; transform:scale(1.08); }
     #exit { background:#222; color:#ccc; }
     #exit:hover { background:#333; color:white; }
-
     #main-content { display:none; padding:1.5rem; max-width:1800px; margin:0 auto; }
     h1 { text-align:center; color:#ff0066; font-size:4rem; margin:1rem 0 2rem; }
-    #player-container {
-      max-width:1400px;
-      margin:0 auto 3rem;
-      border-radius:16px;
-      overflow:hidden;
-      box-shadow:0 0 50px #ff006680;
-    }
+    #player-container { max-width:1400px; margin:0 auto 3rem; border-radius:16px; overflow:hidden; box-shadow:0 0 50px #ff006680; }
     .video-js { width:100%; aspect-ratio:16/9; }
-
     .category-title { color:#ff0066; font-size:2.5rem; margin:3rem 0 1rem; }
-    .channel-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
-      gap:1.2rem;
-    }
-    .channel-card {
-      background:#111;
-      border-radius:12px;
-      overflow:hidden;
-      border:2px solid transparent;
-      transition:all .25s;
-      cursor:pointer;
-      position:relative;
-    }
+    .channel-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:1.2rem; }
+    .channel-card { background:#111; border-radius:12px; overflow:hidden; border:2px solid transparent; transition:all .25s; cursor:pointer; position:relative; }
     .channel-card:hover { transform:scale(1.06); border-color:#ff0066; box-shadow:0 0 30px #ff0066aa; }
     .channel-card img { width:100%; height:150px; object-fit:cover; }
-    .channel-card .title {
-      position:absolute;
-      bottom:0; left:0; right:0;
-      background:linear-gradient(to top, rgba(0,0,0,.9), transparent);
-      padding:1rem;
-      font-size:1.1rem;
-      text-align:center;
-    }
-    .fav-btn {
-      position:absolute;
-      top:8px;
-      right:8px;
-      background:rgba(0,0,0,0.7);
-      border:none;
-      color:#fff;
-      font-size:1.6rem;
-      width:36px;
-      height:36px;
-      border-radius:50%;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      transition:all .2s;
-    }
+    .channel-card .title { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(to top, rgba(0,0,0,.9), transparent); padding:1rem; font-size:1.1rem; text-align:center; }
+    .fav-btn { position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.7); border:none; color:#fff; font-size:1.6rem; width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
     .fav-btn.active { color:#ff0066; background:rgba(255,0,102,0.3); }
     .fav-btn:hover { transform:scale(1.2); }
     .active-channel { border-color:#ff0066 !important; box-shadow:0 0 40px #ff0066cc !important; transform:scale(1.08); }
@@ -104,7 +39,6 @@
 </head>
 <body>
 
-<!-- AGE GATE -->
 <div id="age-gate">
   <div class="age-box">
     <h1>XDXX</h1>
@@ -115,34 +49,23 @@
   </div>
 </div>
 
-<!-- CONTENIDO PRINCIPAL -->
 <div id="main-content">
   <h1>XDXX - Canales en Vivo</h1>
-
   <div id="player-container">
     <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" poster="https://via.placeholder.com/1280x720/000/222?text=Selecciona+un+canal"></video>
   </div>
-
   <div id="loading">Cargando canales... por favor espera</div>
   <div id="categories"></div>
 </div>
 
 <script>
-const player = videojs('my-video', {
-  fluid: true,
-  autoplay: false,
-  controls: true,
-  muted: false
-});
-
+const player = videojs('my-video', { fluid: true, autoplay: false, controls: true, muted: false });
 const categoriesContainer = document.getElementById('categories');
 const loadingDiv = document.getElementById('loading');
 
 let favorites = JSON.parse(localStorage.getItem('xdxxFavorites')) || [];
 
-function saveFavorites() {
-  localStorage.setItem('xdxxFavorites', JSON.stringify(favorites));
-}
+function saveFavorites() { localStorage.setItem('xdxxFavorites', JSON.stringify(favorites)); }
 
 function renderFavorites() {
   if (favorites.length === 0) return;
@@ -191,40 +114,33 @@ function createChannelCard(channel, isFav = false) {
       if (isFav) card.remove();
     }
     saveFavorites();
-    if (favorites.length === 0 && document.getElementById('favorites-section')) {
-      document.getElementById('favorites-section').remove();
-    }
+    if (favorites.length === 0 && document.getElementById('favorites-section')) document.getElementById('favorites-section').remove();
   });
   return card;
 }
 
 async function loadChannels() {
   try {
-    const res = await fetch('https://jjfutbol15.github.io/xdxx/canales.json');
+    const res = await fetch('https://raw.githubusercontent.com/JJFUTBOL15/xdxx/refs/heads/main/canales.json');
     if (!res.ok) throw new Error('Error al cargar JSON');
     const data = await res.json();
-
     loadingDiv.style.display = 'none';
     renderFavorites();
-
     data.categorias.forEach(cat => {
       const title = document.createElement('h2');
       title.className = 'category-title';
       title.textContent = cat.nombre;
       categoriesContainer.appendChild(title);
-
       const grid = document.createElement('div');
       grid.className = 'channel-grid';
-
       cat.canales.forEach(channel => {
         const card = createChannelCard(channel);
         grid.appendChild(card);
       });
-
       categoriesContainer.appendChild(grid);
     });
   } catch (err) {
-    loadingDiv.innerHTML = `<p style="color:#ff0066; font-size:1.6rem;">⚠️ Error al cargar canales. Refresca la página.</p>`;
+    loadingDiv.innerHTML = `<p style="color:#ff0066; font-size:1.6rem;">⚠️ Error al cargar canales. Refresca la página o prueba en otro navegador.</p>`;
     console.error('Error:', err);
   }
 }
@@ -247,7 +163,6 @@ function loadStream(url, name) {
   }
 }
 
-// AGE GATE
 document.getElementById('enter').onclick = () => {
   localStorage.setItem('xdxxVerified', 'true');
   document.getElementById('age-gate').style.display = 'none';
@@ -255,9 +170,7 @@ document.getElementById('enter').onclick = () => {
   loadChannels();
 };
 
-document.getElementById('exit').onclick = () => {
-  window.location.href = 'https://google.com';
-};
+document.getElementById('exit').onclick = () => window.location.href = 'https://google.com';
 
 if (localStorage.getItem('xdxxVerified') === 'true') {
   document.getElementById('age-gate').style.display = 'none';
