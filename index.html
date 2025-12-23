@@ -10,7 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
   <style>
-    body { margin:0; background:#000; color:#eee; font-family:system-ui; overflow-x:hidden; }
+    body { margin:0; background:#000; color:#eee; font-family:system-ui; }
     #age-gate { position:fixed; inset:0; background:rgba(0,0,0,0.98); backdrop-filter:blur(12px); z-index:9999; display:flex; align-items:center; justify-content:center; }
     .age-box { background:rgba(15,15,20,0.95); border:3px solid #ff0066; border-radius:20px; padding:4rem 2.5rem; text-align:center; max-width:520px; box-shadow:0 0 80px #ff006680; }
     .age-box h1 { font-size:7rem; color:#ff0066; margin-bottom:1rem; }
@@ -21,10 +21,10 @@
     #exit { background:#222; color:#ccc; }
     #exit:hover { background:#333; color:white; }
     #main-content { display:none; padding:1.5rem; max-width:1800px; margin:0 auto; }
-    h1 { text-align:center; color:#ff0066; font-size:4rem; margin:1rem 0 2rem; text-shadow:0 0 20px #ff0066aa; }
+    h1 { text-align:center; color:#ff0066; font-size:4rem; margin:1rem 0 2rem; }
     #player-container { max-width:1400px; margin:0 auto 3rem; border-radius:16px; overflow:hidden; box-shadow:0 0 50px #ff006680; }
     .video-js { width:100%; aspect-ratio:16/9; }
-    .category-title { color:#ff0066; font-size:2.5rem; margin:3rem 0 1rem; border-bottom:2px solid #222; padding-bottom:0.8rem; }
+    .category-title { color:#ff0066; font-size:2.5rem; margin:3rem 0 1rem; }
     .channel-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:1.2rem; }
     .channel-card { background:#111; border-radius:12px; overflow:hidden; border:2px solid transparent; transition:all .25s; cursor:pointer; position:relative; }
     .channel-card:hover { transform:scale(1.06); border-color:#ff0066; box-shadow:0 0 30px #ff0066aa; }
@@ -54,7 +54,7 @@
   <div id="player-container">
     <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" poster="https://via.placeholder.com/1280x720/000/222?text=Selecciona+un+canal"></video>
   </div>
-  <div id="loading">Cargando canales... (puede tardar 5-10 segundos la primera vez)</div>
+  <div id="loading">Cargando canales... (espera 5-15 segundos)</div>
   <div id="categories"></div>
 </div>
 
@@ -121,7 +121,7 @@ function createChannelCard(channel, isFav = false) {
 
 async function loadChannels() {
   try {
-    const res = await fetch('https://raw.githubusercontent.com/JJFUTBOL15/xdxx/refs/heads/main/canales.json');
+    const res = await fetch('https://raw.githubusercontent.com/JJFUTBOL15/xdxx/main/canales-clean.json');
     if (!res.ok) throw new Error('Error al cargar JSON');
     const data = await res.json();
     loadingDiv.style.display = 'none';
@@ -140,7 +140,7 @@ async function loadChannels() {
       categoriesContainer.appendChild(grid);
     });
   } catch (err) {
-    loadingDiv.innerHTML = `<p style="color:#ff0066; font-size:1.6rem;">⚠️ Error al cargar canales. Prueba refrescar (F5) o en modo incógnito.</p>`;
+    loadingDiv.innerHTML = `<p style="color:#ff0066; font-size:1.6rem;">⚠️ Error al cargar canales. Refresca (F5) o prueba en modo incógnito.</p>`;
     console.error('Error cargando JSON:', err);
   }
 }
