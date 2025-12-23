@@ -121,7 +121,7 @@ function createChannelCard(channel, isFav = false) {
 
 async function loadChannels() {
   try {
-    const res = await fetch('https://raw.githubusercontent.com/JJFUTBOL15/xdxx/main/canales-clean.json');
+    const res = await fetch('https://jjfutbol15.github.io/xdxx/canales-test.json');
     if (!res.ok) throw new Error('Error al cargar JSON');
     const data = await res.json();
     loadingDiv.style.display = 'none';
