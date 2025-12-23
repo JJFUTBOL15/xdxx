@@ -54,7 +54,7 @@
   <div id="player-container">
     <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" poster="https://via.placeholder.com/1280x720/000/222?text=Selecciona+un+canal"></video>
   </div>
-  <div id="loading">Cargando canales... por favor espera</div>
+  <div id="loading">Cargando canales... por favor espera (puede tardar unos segundos)</div>
   <div id="categories"></div>
 </div>
 
@@ -140,8 +140,8 @@ async function loadChannels() {
       categoriesContainer.appendChild(grid);
     });
   } catch (err) {
-    loadingDiv.innerHTML = `<p style="color:#ff0066; font-size:1.6rem;">⚠️ Error al cargar canales. Refresca la página o prueba en otro navegador.</p>`;
-    console.error('Error:', err);
+    loadingDiv.innerHTML = `<p style="color:#ff0066; font-size:1.6rem;">⚠️ Error al cargar canales. Prueba refrescar (F5) o en modo incógnito.</p>`;
+    console.error('Error cargando JSON:', err);
   }
 }
 
@@ -152,17 +152,18 @@ function loadStream(url, name) {
     hls.loadSource(url);
     hls.attachMedia(video);
     hls.on(Hls.Events.MANIFEST_PARSED, () => {
-      player.play().catch(() => console.log('Autoplay bloqueado'));
+      player.play().catch(() => console.log('Autoplay bloqueado por navegador'));
       player.poster(`https://via.placeholder.com/1280x720/000/222?text=${encodeURIComponent(name)}`);
     });
   } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
     player.src({ type: 'application/x-mpegURL', src: url });
     player.play().catch(() => {});
   } else {
-    alert('Tu navegador no soporta HLS. Prueba Chrome/Firefox/Safari.');
+    alert('Tu navegador no soporta este formato de stream. Prueba Chrome o Firefox.');
   }
 }
 
+// AGE GATE
 document.getElementById('enter').onclick = () => {
   localStorage.setItem('xdxxVerified', 'true');
   document.getElementById('age-gate').style.display = 'none';
