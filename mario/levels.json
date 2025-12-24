@@ -1,0 +1,18 @@
+{
+  "game": {
+    "title": "Super Mario Adventure",
+    "player": {
+      "name": "Mario",
+      "abilities": ["run", "jump", "shoot_fireball"],
+      "states": ["normal", "big", "fire", "invincible"],
+      "lives": 3,
+      "start_position": { "x": 0, "y": 0 }
+    },
+    "settings": {
+      "time_per_level": 120,
+      "max_lives": 5,
+      "coin_value": 100,
+      "extra_life_coins": 100
+    },
+    "levels": [ ... ]  // (el JSON completo que ya me diste, copia tal cual)
+}
